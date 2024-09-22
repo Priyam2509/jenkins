@@ -1,0 +1,31 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Build: Step 1 - Prepare build environment'
+                sh 'mkdir -p build'
+                
+                echo 'Build: Step 2 - Compile the code'
+                sh 'echo "Compiling code..." > build/compile.log'
+                
+                echo 'Build: Step 3 - Run unit tests'
+                sh 'echo "Running unit tests..." > build/test_results.log'
+            }
+        }
+        
+        stage('Deploy') {
+            steps {
+                echo 'Deploy: Step 1 - Prepare deployment package'
+                sh 'tar -czf app.tar.gz build/'
+                
+                echo 'Deploy: Step 2 - Transfer to server'
+                sh 'echo "Transferring app.tar.gz to server..." > deploy.log'
+                
+                echo 'Deploy: Step 3 - Restart application'
+                sh 'echo "Restarting application..." >> deploy.log'
+            }
+        }
+    }
+}
